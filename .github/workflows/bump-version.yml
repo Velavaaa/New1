@@ -28,9 +28,9 @@ jobs:
       - name: Bump version
         run: bump2version patch
         env:
-          MY_TOKEN: ${{ secrets.MY_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
 
       - name: Push changes
         uses: ad-m/github-push-action@v0.6.0
-        env:
-          MY_TOKEN: ${{ secrets.MY_TOKEN }}
+        with:
+          github_token: ${{ secrets.MY_GITHUB_TOKEN }}
