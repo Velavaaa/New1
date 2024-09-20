@@ -1,36 +1,33 @@
-name: Bump version
+name: Push Changes
 
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
-  bump-version:
+  push:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/checkout@v2
         with:
-          python-version: '3.x'
+          fetch-depth: 0
 
-      - name: Configure Git
+      - name: Set up Git
         run: |
-          git config user.name "Velavaaa"
-          git config user.email "murugaqwe63@gmail.com"
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
-      - name: Install bump2version
-        run: pip install bump2version
+      - name: Pull latest changes
+        run: git pull origin master
 
-      - name: Bump version
-        run: bump2version patch
-        env:
-          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+      - name: Make changes
+        run: |
+          # Your script to make changes goes here
 
-      - name: Push changes
+      - name: Commit and push changes
         uses: ad-m/github-push-action@v0.6.0
         with:
-          github_token: ${{ secrets.MY_GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
