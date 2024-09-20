@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -21,13 +23,15 @@ jobs:
         run: |
           git config user.name "Velavaaa"
           git config user.email "murugaqwe63@gmail.com"
+
       - name: Install bump2version
         run: pip install bump2version
 
       - name: Bump version
         run: bump2version patch
-        env:
-          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+
+      - name: Pull latest changes
+        run: git pull origin main
 
       - name: Push changes
         uses: ad-m/github-push-action@v0.6.0
