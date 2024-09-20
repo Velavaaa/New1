@@ -27,6 +27,11 @@ jobs:
       - name: Install bump2version
         run: pip install bump2version
 
+      - name: Commit changes
+        run: |
+          git add .
+          git commit -m "Committing changes before bumping version" || echo "No changes to commit"
+
       - name: Bump version
         run: bump2version patch
 
