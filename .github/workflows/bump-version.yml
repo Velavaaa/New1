@@ -17,6 +17,11 @@ jobs:
         with:
           python-version: '3.x'
 
+      - name: Configure Git
+        run: |
+          git config user.name "Velavaaa"
+          git config user.email "murugaqwe63@gmail.com"
+
       - name: Install bump2version
         run: pip install bump2version
 
