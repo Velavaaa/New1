@@ -27,6 +27,19 @@ jobs:
       - name: Install bump2version
         run: pip install bump2version
 
+      - name: Ensure .bumpversion.cfg exists
+        run: |
+          if [ ! -f .bumpversion.cfg ]; then
+            echo "[bumpversion]" > .bumpversion.cfg
+            echo "current_version = 0.1.2" >> .bumpversion.cfg
+            echo "commit = True" >> .bumpversion.cfg
+            echo "tag = True" >> .bumpversion.cfg
+            echo "[bumpversion:file:setup.py]" >> .bumpversion.cfg
+            git add .bumpversion.cfg
+            git commit -m "Add bumpversion configuration file"
+            git push origin main
+          fi
+
       - name: Delete existing tag
         run: |
           git tag -d v0.1.2 || true
