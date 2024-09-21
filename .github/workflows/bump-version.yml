@@ -11,8 +11,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -27,34 +25,10 @@ jobs:
       - name: Install bump2version
         run: pip install bump2version
 
-      - name: Ensure .bumpversion.cfg exists
-        run: |
-          if [ ! -f .bumpversion.cfg ]; then
-            echo "[bumpversion]" > .bumpversion.cfg
-            echo "current_version = 0.1.2" >> .bumpversion.cfg
-            echo "commit = True" >> .bumpversion.cfg
-            echo "tag = True" >> .bumpversion.cfg
-            echo "[bumpversion:file:your_file.py]" >> .bumpversion.cfg
-            git add .bumpversion.cfg
-            git commit -m "Add bumpversion configuration file"
-            git push origin main
-          fi
-
-      - name: Pull latest changes
-        run: git pull origin main
-
-      - name: Delete existing tag
-        run: |
-          git tag -d v0.1.2 || true
-          git push origin :refs/tags/v0.1.2 || true
-
-      - name: Commit changes
-        run: |
-          git add .
-          git commit -m "Committing changes before bumping version" || echo "No changes to commit"
-
       - name: Bump version
-        run: bump2version --new-version 0.1.3 patch
+        run: bump2version patch
+        env:
+          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
 
       - name: Push changes
         uses: ad-m/github-push-action@v0.6.0
